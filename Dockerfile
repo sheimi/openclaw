@@ -202,6 +202,31 @@ RUN --mount=type=cache,id=openclaw-bookworm-apt-cache,target=/var/cache/apt,shar
         docker-ce-cli docker-compose-plugin; \
     fi
 
+RUN --mount=type=cache,id=openclaw-sandbox-bookworm-apt-cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=openclaw-sandbox-bookworm-apt-lists,target=/var/lib/apt,sharing=locked \
+  apt-get update \
+  && apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    chromium \
+    curl \
+    fonts-liberation \
+    fonts-noto-color-emoji \
+    git \
+    jq \
+    novnc \
+    python3 \
+    socat \
+    websockify \
+    x11vnc \
+    xvfb \
+    fonts-wqy-zenhei fonts-arphic-ukai fonts-arphic-uming
+
+
+COPY --chmod=755 scripts_sheimi/sandbox-browser-entrypoint.sh /usr/local/bin/openclaw-sandbox-browser.sh
+COPY --chmod=755 scripts_sheimi/start-browser.sh /usr/local/bin/start-browser.sh
+COPY --chmod=755 scripts_sheimi/start-vnc.sh /usr/local/bin/start-vnc.sh
+
 # Expose the CLI binary without requiring npm global writes as non-root.
 RUN ln -sf /app/openclaw.mjs /usr/local/bin/openclaw \
  && chmod 755 /app/openclaw.mjs
