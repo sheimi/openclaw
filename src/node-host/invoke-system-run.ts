@@ -530,6 +530,7 @@ async function executeSystemRunPhase(
 
   const result = await opts.runCommand(execArgv, phase.cwd, phase.env, phase.timeoutMs);
   applyOutputTruncation(result);
+  console.log('-----------------------> send finish event');
   await opts.sendExecFinishedEvent({
     sessionKey: phase.sessionKey,
     runId: phase.runId,
@@ -538,6 +539,7 @@ async function executeSystemRunPhase(
     suppressNotifyOnExit: phase.suppressNotifyOnExit,
   });
 
+  console.log('-----------------------> send invoke result');
   await opts.sendInvokeResult({
     ok: true,
     payloadJSON: JSON.stringify({

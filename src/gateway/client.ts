@@ -497,6 +497,7 @@ export class GatewayClient {
   private handleMessage(raw: string) {
     try {
       const parsed = JSON.parse(raw);
+      console.log('------------------handle response frame', parsed);
       if (validateEventFrame(parsed)) {
         const evt = parsed;
         if (evt.event === "connect.challenge") {
@@ -529,6 +530,7 @@ export class GatewayClient {
         if (!pending) {
           return;
         }
+        console.log('------------------handle response frame pending', pending);
         // If the payload is an ack with status accepted, keep waiting for final.
         const payload = parsed.payload as { status?: unknown } | undefined;
         const status = payload?.status;

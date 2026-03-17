@@ -417,13 +417,22 @@ CN_TAG="registry.cn-hangzhou.aliyuncs.com/deputy-ai/openclaw:${TAG}"
 echo "==> Building Docker image: $IMAGE_NAME"
 echo "==> Building Docker image: $DOCKER_TAG"
 echo "==> Building Docker image: $CN_TAG"
-docker buildx build --platform linux/amd64,linux/arm64 \
+# docker buildx build --platform linux/amd64,linux/arm64 \
+#   --build-arg "OPENCLAW_DOCKER_APT_PACKAGES=${OPENCLAW_DOCKER_APT_PACKAGES}" \
+#   --build-arg "OPENCLAW_EXTENSIONS=${OPENCLAW_EXTENSIONS}" \
+#   --build-arg "OPENCLAW_INSTALL_DOCKER_CLI=${OPENCLAW_INSTALL_DOCKER_CLI:-}" \
+#   -t "$IMAGE_NAME" \
+#   -t "$DOCKER_TAG" \
+#   -t "$CN_TAG" \
+#   -f "$ROOT_DIR/Dockerfile" \
+#   --push \
+#   "$ROOT_DIR"
+
+echo $ROOT_DIR
+docker build \
   --build-arg "OPENCLAW_DOCKER_APT_PACKAGES=${OPENCLAW_DOCKER_APT_PACKAGES}" \
   --build-arg "OPENCLAW_EXTENSIONS=${OPENCLAW_EXTENSIONS}" \
   --build-arg "OPENCLAW_INSTALL_DOCKER_CLI=${OPENCLAW_INSTALL_DOCKER_CLI:-}" \
   -t "$IMAGE_NAME" \
-  -t "$DOCKER_TAG" \
-  -t "$CN_TAG" \
   -f "$ROOT_DIR/Dockerfile" \
-  --push \
   "$ROOT_DIR"

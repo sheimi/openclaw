@@ -602,8 +602,11 @@ async function sendInvokeResult(
   },
 ) {
   try {
+    console.log('---start--------------------> send node invoke result');
     await client.request("node.invoke.result", buildNodeInvokeResultParams(frame, result));
-  } catch {
+    console.log('---end--------------------> send node invoke result');
+  } catch (e) {
+    console.log('---fail--------------------> fail to send node invoke result', e, String(e));
     // ignore: node invoke responses are best-effort
   }
 }
@@ -650,10 +653,12 @@ export function buildNodeInvokeResultParams(
 
 async function sendNodeEvent(client: GatewayClient, event: string, payload: unknown) {
   try {
+    console.log('----- start ------------------> send node event', event, payload);
     await client.request("node.event", {
       event,
       payloadJSON: payload ? JSON.stringify(payload) : null,
     });
+    console.log('----- end ------------------> send node event', event, payload);
   } catch {
     // ignore: node events are best-effort
   }
